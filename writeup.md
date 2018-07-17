@@ -50,21 +50,18 @@ Here is an exploratory visualization of the data set. It is a bar chart showing 
 
 #### 1. Describe how you preprocessed the image data. What techniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, and provide example images of the additional data. Then describe the characteristics of the augmented training set like number of images in the set, number of images for each class, etc.)
 
-As a first step, I decided to convert the images to grayscale because ...
+((x - np.mean(x),axis=0)/(np.std(x),axis=0)
+Normalize image data z = (x-mean(x))/std(x)
 
-Here is an example of a traffic sign image before and after grayscaling.
+z-score of 0 is at the mean of the distribution and a z-score of 2.0 or beyond is in the tails of the distribution.  
+A negative z–score means that the original score was below the mean. 
+As the sample size becomes large, approximately half the z-scores should be negative and half of the 
+z-scores should be positive.
 
-![alt text][image2]
+[here](https://en.wikipedia.org/wiki/Grayscale#Converting_color_to_grayscale)
+Y' = 0.299 R + 0.587 G + 0.114 B 
+np.dot(rgb[...,:3], [0.299, 0.587, 0.114])
 
-As a last step, I normalized the image data because ...
-
-I decided to generate additional data because ... 
-
-To add more data to the the data set, I used the following techniques because ... 
-
-Here is an example of an original image and an augmented image:
-
-![alt text][image3]
 
 The difference between the original data set and the augmented data set is the following ... 
 
@@ -76,13 +73,19 @@ My final model consisted of the following layers:
 | Layer         		|     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
 | Input         		| 32x32x3 RGB image   							| 
-| Convolution 3x3     	| 1x1 stride, same padding, outputs 32x32x64 	|
+| Convolution 3x3     	| 1x1 stride, valid padding, outputs 28x28x6 	|
 | RELU					|												|
-| Max pooling	      	| 2x2 stride,  outputs 16x16x64 				|
-| Convolution 3x3	    | etc.      									|
-| Fully connected		| etc.        									|
-| Softmax				| etc.        									|
-|						|												|
+| Max pooling	      	| 2x2 stride,  outputs 14x14x6 				|
+| Input         		| 14x14x6 RGB image   							| 
+| Convolution 3x3     	| 1x1 stride, valid padding, outputs 10x10x16 	|
+| RELU					|												|
+| Max pooling	      	| 2x2 stride,  outputs 5x5x16 				|
+| Flatten	      	| Input = 5x5x16. Output = 400 				|
+| Fully connected		| Input = 400 Output = 120     dropout = 0.6    									|
+| RELU					|												|
+| Fully connected		| Input = 120 Output = 84     dropout = 0.6    									|									|
+| RELU					|												|
+|	Fully connected		| Input = 84 Output = 43     
 |						|												|
  
 
@@ -94,15 +97,29 @@ To train the model, I used an ....
 #### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
 My final model results were:
-* training set accuracy of ?
-* validation set accuracy of ? 
-* test set accuracy of ?
+* training set accuracy of 0.938
+* validation set accuracy of 0.938
+* test set accuracy of 0.600
 
 If an iterative approach was chosen:
 * What was the first architecture that was tried and why was it chosen?
+
+CNN and used http://yann.lecun.com/exdb/publis/pdf/lecun-01a.pdf
+
 * What were some problems with the initial architecture?
 * How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to overfitting or underfitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.
+
 * Which parameters were tuned? How were they adjusted and why?
+
+Epochs indicate total number of times data is run through given network
+We need to tweak this parameters so that cost is between underfitting to overfitting
+i.e increase till validation accuracy decreases and training accuracy increases avoid overfitting
+If validation data is not provided take 20% of training data as good rule of thumb
+
+batch size indicates total training data for a given batch.Increase for better results.
+
+Dropout for avoiding overfitting.
+
 * What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
 
 If a well known architecture was chosen:
@@ -121,6 +138,26 @@ Here are five German traffic signs that I found on the web:
 ![alt text][image7] ![alt text][image8]
 
 The first image might be difficult to classify because ...
+
+INFO:tensorflow:Restoring parameters from ./lenet
+New Image 1
+New Image Accuracy = 1.000
+
+INFO:tensorflow:Restoring parameters from ./lenet
+New Image 2
+New Image Accuracy = 0.500
+
+INFO:tensorflow:Restoring parameters from ./lenet
+New Image 3
+New Image Accuracy = 0.333
+
+INFO:tensorflow:Restoring parameters from ./lenet
+New Image 4
+New Image Accuracy = 0.500
+
+INFO:tensorflow:Restoring parameters from ./lenet
+New Image 5
+New Image Accuracy = 0.600
 
 #### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
