@@ -44,7 +44,7 @@ signs data set:
 
 Here is an exploratory visualization of the data set. It is a bar chart showing how the data ...
 
-![alt text][./Exploratory_visualization.png]
+![alt text][image1]
 
 ### Design and Test a Model Architecture
 
@@ -107,9 +107,18 @@ If an iterative approach was chosen:
 CNN and used http://yann.lecun.com/exdb/publis/pdf/lecun-01a.pdf
 
 * What were some problems with the initial architecture?
+
+Initial architecture had accuracy around 87 and even with changing epochs,batch size or learning rate validation accuracy was not improving.When i converted colored images to gray i tried to apply histogram equalization to check if that would improve accuracy but at the end regularization using drop out of 60% helped. 
+
 * How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to overfitting or underfitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.
 
+I added drop out with 0.6 keep i.e 60% is kept and rest is dropped ,accuracy jumped to 93.8
+
 * Which parameters were tuned? How were they adjusted and why?
+
+Epochs = 10
+Batch size = 128
+learing rate = 0.001
 
 Epochs indicate total number of times data is run through given network
 We need to tweak this parameters so that cost is between underfitting to overfitting
@@ -122,11 +131,58 @@ Dropout for avoiding overfitting.
 
 * What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
 
+Without dropout layer Validation accuracy was improving with every epoch than it started declining.When i added drop out layer to CNN i started with keep = 0.5 as mentioned in lecture but after epoch 8 it started declining but accuracy was 90% which was better when i didn't had 
+
 If a well known architecture was chosen:
 * What architecture was chosen?
+
+CNN and used this document as reference http://yann.lecun.com/exdb/publis/pdf/lecun-01a.pdf
+
+For optimizer adam optimizer was used instead of classical stochastic gradient discent because Stochastic gradient descent maintains a single learning rate for all weight updates and the learning rate does not change during training.
+
+In Adam optimizer earning rate is maintained for each network weight (parameter) and separately adapted as learning unfolds.Also adam was easier to implement .
+
 * Why did you believe it would be relevant to the traffic sign application?
+
+Since this is image and CNN would work better.
+
 * How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well?
  
+ Final model accuracy was 93.8 % after dropout was added with keep = 0.6
+ 
+ Training...
+
+EPOCH 1 ...
+Validation Accuracy = 0.685
+
+EPOCH 2 ...
+Validation Accuracy = 0.812
+
+EPOCH 3 ...
+Validation Accuracy = 0.860
+
+EPOCH 4 ...
+Validation Accuracy = 0.895
+
+EPOCH 5 ...
+Validation Accuracy = 0.900
+
+EPOCH 6 ...
+Validation Accuracy = 0.927
+
+EPOCH 7 ...
+Validation Accuracy = 0.934
+
+EPOCH 8 ...
+Validation Accuracy = 0.927
+
+EPOCH 9 ...
+Validation Accuracy = 0.944
+
+EPOCH 10 ...
+Validation Accuracy = 0.938
+
+Model saved
 
 ### Test a Model on New Images
 
