@@ -140,7 +140,7 @@ CNN and used this document as reference http://yann.lecun.com/exdb/publis/pdf/le
 
 For optimizer adam optimizer was used instead of classical stochastic gradient discent because Stochastic gradient descent maintains a single learning rate for all weight updates and the learning rate does not change during training.
 
-In Adam optimizer earning rate is maintained for each network weight (parameter) and separately adapted as learning unfolds.Also adam was easier to implement .
+In Adam optimizer learning rate is maintained for each network weight and separately adapted as learning unfolds.Also adam was easier to implement .
 
 * Why did you believe it would be relevant to the traffic sign application?
 
